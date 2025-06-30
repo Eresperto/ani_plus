@@ -14,3 +14,16 @@ class Subscription {
   });
 }
 
+class ownerSubscriptions{
+  final String title;
+  final String date;
+  final String imagePath;
+
+  ownerSubscriptions({
+    required this.title,
+    required this.date,
+    required this.imagePath,
+  });
+
+}
+

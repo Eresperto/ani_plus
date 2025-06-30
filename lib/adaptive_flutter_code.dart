@@ -39,10 +39,29 @@ late Subscription subscription;
 }
 
 Future<void> _openTelegram(/*String url*/) async {
-  final uri = Uri.parse('https://t.me/beeschoologe');
+  final uri = Uri.parse('https://t.me/Radiantli');
   if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-    throw 'Could not launch https://t.me/beeschoologe';
+    throw 'Could not launch https://t.me/Radiantli';
   }
+}
+void _scrollTo(GlobalKey key) {
+  final ctx = key.currentContext;
+  if (ctx != null) {
+    Scrollable.ensureVisible(
+      ctx,
+      duration: Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+}
+
+Widget _buildSection({required Key key, required Widget child}) {
+  return Container(
+    key: key,
+    width: double.infinity,
+    //margin: EdgeInsets.only(bottom: 24),
+    child: child,
+  );
 }
 
 // Адаптивная версия Landing страницы
@@ -105,470 +124,510 @@ class AdaptiveLanding extends StatelessWidget {
     // Адаптивные отступы
     final horizontalPadding = screenWidth * 0.05; // 5% от ширины экрана
     final verticalPadding = screenHeight * 0.03; // 3% от высоты экрана
-    
+
+    final GlobalKey _section1Key = GlobalKey();
+    final GlobalKey _section2Key = GlobalKey();
+    final GlobalKey _section3Key = GlobalKey();
+
+
+
     return Container(
       color: const Color(0xFFF8FAFC),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Верхняя навигация
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
+      child:
+SingleChildScrollView(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      // Верхняя навигация
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: verticalPadding,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Навигационные ссылки
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //_buildNavItem('Подписки', headerFontSize * 0.4, context),
+                  _navLink('Подписки', headerFontSize * 0.4, _section1Key),
+                  SizedBox(width: screenWidth * 0.03),
+                  _navLink('Преимущества', headerFontSize * 0.4, _section2Key),
+                  SizedBox(width: screenWidth * 0.03),
+                  _buildNavItem('Поддержка', headerFontSize * 0.4, context),
+                ],
+              ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Навигационные ссылки
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildNavItem('Подписки', headerFontSize * 0.4, context),
-                      SizedBox(width: screenWidth * 0.03),
-                      _buildNavItem('Преимущества', headerFontSize * 0.4, context),
-                      SizedBox(width: screenWidth * 0.03),
-                      _buildNavItem('Поддержка', headerFontSize * 0.4, context),
-                    ],
-                  ),
-                ),
 
-                // Кнопка "Перейти к покупке"
-                // _buildGradientButton(
-                //   'Перейти к покупке',
-                //   width: screenWidth * 0.2109,
-                //   height: screenHeight * 0.097,
-                //   fontSize: headerFontSize * 0.35,
-                //   context: context,
-                // ),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return screenWidth > 900
-                        ? _buildGradientButton(
-                      'Перейти к покупке',
-                      17,
-                      width: screenWidth * 0.21,
-                      height: screenHeight * 0.07,
-                      fontSize: headerFontSize * 0.35,
-                      context: context,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/registration');
-                      },
-                    )
-                        : _buildGradientButton(
-                      'Перейти к покупке',
-                      9,
-                      width: screenWidth * 0.2109,
-                      height: screenHeight * 0.04,
-                      fontSize: headerFontSize * 0.35,
-                      context: context,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/registration');
-                      },
-                    );
+            // Кнопка "Перейти к покупке"
+            // _buildGradientButton(
+            //   'Перейти к покупке',
+            //   width: screenWidth * 0.2109,
+            //   height: screenHeight * 0.097,
+            //   fontSize: headerFontSize * 0.35,
+            //   context: context,
+            // ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return screenWidth > 900
+                    ? _buildGradientButton(
+                  'Перейти к покупке',
+                  17,
+                  width: screenWidth * 0.21,
+                  height: screenHeight * 0.07,
+                  fontSize: headerFontSize * 0.35,
+                  context: context,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/registration');
                   },
-                ),
-              ],
-            ),
-          ),
-
-
-          // Основной контент
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: screenHeight*0.2),
-            child:
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // Заголовок и изображение
-
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //    mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     // Заголовок и скидка
-                //     // Expanded(
-                //     //   flex: 4,
-                //      // child:
-                //     Container(
-                //       height: screenWidth * 0.15,
-                //       child:
-                //       Row(
-                //          crossAxisAlignment: CrossAxisAlignment.center,
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         children: [
-                //           Text(
-                //             'Экономьте на самых\nпопулярных подписках',
-                //             style: TextStyle(
-                //               color: Colors.black,
-                //               fontSize: headerFontSize*1.1,
-                //               fontFamily: 'Manjari',
-                //               fontWeight: FontWeight.w400,
-                //               height: 1.32,
-                //             ),
-                //           ),
-                //           SizedBox(height: screenWidth * 0.03),
-                //
-                //
-                //           Expanded(
-                //             flex: 1,
-                //             child:
-                //             Container(
-                //               height: screenHeight * 0.8,
-                //               decoration: const BoxDecoration(
-                //                 image: DecorationImage(
-                //                   image: AssetImage('assets/logoimage.jpg'),
-                //                   fit: BoxFit.contain,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //
-                //    // ),
-                //     LayoutBuilder(
-                //       builder: (context, constraints) {
-                //         // Адаптивная компоновка карточек в зависимости от ширины экрана
-                //         return screenWidth > 900
-                //             ? _buildGradientButton(
-                //           'До 70%',
-                //           width: screenWidth * 0.19,
-                //           height: screenHeight * 0.13,
-                //           fontSize: headerFontSize,
-                //           context: context,
-                //         )
-                //             : _buildGradientButton(
-                //           'До 70%',
-                //           width: screenWidth * 0.21,
-                //           height: screenHeight * 0.08,
-                //           fontSize: headerFontSize,
-                //           context: context,
-                //         );
-                //       },
-                //     ),
-                //     // Изображение
-                //     // Expanded(
-                //     //   flex: 2,
-                //     //   child: Container(
-                //     //     height: screenHeight * 0.3,
-                //     //     decoration: const BoxDecoration(
-                //     //       image: DecorationImage(
-                //     //         image: AssetImage('assets/logoimage.jpg'),
-                //     //         fit: BoxFit.contain,
-                //     //       ),
-                //     //     ),
-                //     //   ),
-                //     // ),
-                //   ],
-                // ),
-                Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Заголовок и скидка
-                      // Expanded(
-                      //   flex: 4,
-                      // child:
-                      Container(
-                        height: screenWidth * 0.27,
-                        child:
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Экономьте на самых\nпопулярных подписках',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: headerFontSize*0.85,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                                // fontFamily: 'Unbounded',
-                                // fontWeight: FontWeight.w500,
-                                // fontFamily: 'Manjari',
-                                // fontWeight: FontWeight.w700,
-                                height: 1.32,
-                              ),
-                            ),
-                            SizedBox(height: screenWidth * 0.03),
-
-
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                // Адаптивная компоновка карточек в зависимости от ширины экрана
-                                return screenWidth > 900
-                                    ?
-                                _buildGradientButton(
-                                  'До 70%',
-                                  17,
-                                  width: screenWidth * 0.24,
-                                  height: screenHeight * 0.12,
-                                  fontSize: headerFontSize,
-                                  context: context,
-                                )
-                                // _buildGradientButton(
-                                //   'До 70%',
-                                //   width: screenWidth * 0.19,
-                                //   height: screenHeight * 0.13,
-                                //   fontSize: headerFontSize,
-                                //   context: context,
-                                // )
-                                    : _buildGradientButton(
-                                  'До 70%',
-                                  10,
-                                  width: screenWidth * 0.24,
-                                  height: screenHeight * 0.068,
-                                  fontSize: headerFontSize,
-                                  context: context,
-                                );
-                              },
-                            ) ,
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child:
-                        Container(
-                         // height: screenWidth * 0.35,
-                          height: screenWidth * 0.2,
-                          width: screenWidth * 0.15,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/logoimage.png'),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                      // ),
-
-                      // Изображение
-                      // Expanded(
-                      //   flex: 2,
-                      //   child: Container(
-                      //     height: screenHeight * 0.3,
-                      //     decoration: const BoxDecoration(
-                      //       image: DecorationImage(
-                      //         image: AssetImage('assets/logoimage.jpg'),
-                      //         fit: BoxFit.contain,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
-                  ),
                 )
-                ,
-                SizedBox(height: screenHeight * 0.05),
-
-                SizedBox(height: screenHeight * 0.05),
-            Column(
-             // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'ПОЧЕМУ ВЫБИРАЮТ ANI+?',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: titleFontSize,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      'наши преимущества',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: subtitleFontSize,
-                        fontFamily: 'Manjari',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-                // Секция "Наши преимущества"
-
-
-                SizedBox(height: screenWidth * 0.03),
-
-                // Карточки преимуществ
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    // Адаптивная компоновка карточек в зависимости от ширины экрана
-                    return screenWidth > 900
-                        ? _buildAdvantagesRow(
-                      constraints.maxWidth,
-                      screenHeight,
-                      titleFontSize,
-                      bodyFontSize,
-                    )
-                        : _buildAdvantagesColumn(
-                       // : _buildAdvantagesColumn(
-                      constraints.maxWidth,
-                      screenHeight,
-                      titleFontSize,
-                      bodyFontSize,
-                    );
+                    : _buildGradientButton(
+                  'Перейти к покупке',
+                  9,
+                  width: screenWidth * 0.2109,
+                  height: screenHeight * 0.04,
+                  fontSize: headerFontSize * 0.35,
+                  context: context,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/registration');
                   },
-                ),
-              ],
+                );
+              },
             ),
+          ],
+        ),
+      ),
 
 
-                SizedBox(height: screenWidth * 0.09),
+      // Основной контент
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: screenHeight*0.2),
+        child:
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // Заголовок и изображение
 
-                // Секция "Выберете свою подписку"
-                Center(
-                  child: Text(
-                    'Выберете свою подписку',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: titleFontSize,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: screenWidth * 0.06),
-
-                // Карточки подписок
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    // Адаптивная компоновка карточек подписок в зависимости от ширины экрана
-                    return screenWidth > 650
-                        ? _buildSubscriptionRow(
-                           // constraints.maxWidth,
-                            screenWidth,
-                            screenHeight,
-                            titleFontSize,
-                            subtitleFontSize,
-                            context,
-                          )
-                        : _buildSubscriptionColumn(
-                            constraints.maxWidth,
-                            screenHeight,
-                            screenWidth,
-                            titleFontSize,
-                            subtitleFontSize,
-                            context,
-                          );
-                  },
-
-                ),
-                SizedBox(height: screenWidth*0.1,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //    mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     // Заголовок и скидка
+            //     // Expanded(
+            //     //   flex: 4,
+            //      // child:
+            //     Container(
+            //       height: screenWidth * 0.15,
+            //       child:
+            //       Row(
+            //          crossAxisAlignment: CrossAxisAlignment.center,
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             'Экономьте на самых\nпопулярных подписках',
+            //             style: TextStyle(
+            //               color: Colors.black,
+            //               fontSize: headerFontSize*1.1,
+            //               fontFamily: 'Manjari',
+            //               fontWeight: FontWeight.w400,
+            //               height: 1.32,
+            //             ),
+            //           ),
+            //           SizedBox(height: screenWidth * 0.03),
+            //
+            //
+            //           Expanded(
+            //             flex: 1,
+            //             child:
+            //             Container(
+            //               height: screenHeight * 0.8,
+            //               decoration: const BoxDecoration(
+            //                 image: DecorationImage(
+            //                   image: AssetImage('assets/logoimage.jpg'),
+            //                   fit: BoxFit.contain,
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //
+            //    // ),
+            //     LayoutBuilder(
+            //       builder: (context, constraints) {
+            //         // Адаптивная компоновка карточек в зависимости от ширины экрана
+            //         return screenWidth > 900
+            //             ? _buildGradientButton(
+            //           'До 70%',
+            //           width: screenWidth * 0.19,
+            //           height: screenHeight * 0.13,
+            //           fontSize: headerFontSize,
+            //           context: context,
+            //         )
+            //             : _buildGradientButton(
+            //           'До 70%',
+            //           width: screenWidth * 0.21,
+            //           height: screenHeight * 0.08,
+            //           fontSize: headerFontSize,
+            //           context: context,
+            //         );
+            //       },
+            //     ),
+            //     // Изображение
+            //     // Expanded(
+            //     //   flex: 2,
+            //     //   child: Container(
+            //     //     height: screenHeight * 0.3,
+            //     //     decoration: const BoxDecoration(
+            //     //       image: DecorationImage(
+            //     //         image: AssetImage('assets/logoimage.jpg'),
+            //     //         fit: BoxFit.contain,
+            //     //       ),
+            //     //     ),
+            //     //   ),
+            //     // ),
+            //   ],
+            // ),
+            Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Заголовок и скидка
+                  // Expanded(
+                  //   flex: 4,
+                  // child:
+                  Container(
+                    height: screenWidth * 0.27,
+                    child:
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Почему так выгодно?",
-                          textAlign: TextAlign.start,
+                        Text(
+                          'Экономьте на самых\nпопулярных подписках',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: titleFontSize*1.2,
+                            fontSize: headerFontSize*0.85,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                            // fontFamily: 'Unbounded',
+                            // fontWeight: FontWeight.w500,
+                            // fontFamily: 'Manjari',
+                            // fontWeight: FontWeight.w700,
+                            height: 1.32,
+                          ),
+                        ),
+                        SizedBox(height: screenWidth * 0.03),
+
+
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            // Адаптивная компоновка карточек в зависимости от ширины экрана
+                            return screenWidth > 900
+                                ?
+                            _buildGradientButton(
+                              'До 70%',
+                              17,
+                              width: screenWidth * 0.24,
+                              height: screenHeight * 0.12,
+                              fontSize: headerFontSize,
+                              context: context,
+                            )
+                            // _buildGradientButton(
+                            //   'До 70%',
+                            //   width: screenWidth * 0.19,
+                            //   height: screenHeight * 0.13,
+                            //   fontSize: headerFontSize,
+                            //   context: context,
+                            // )
+                                : _buildGradientButton(
+                              'До 70%',
+                              10,
+                              width: screenWidth * 0.24,
+                              height: screenHeight * 0.068,
+                              fontSize: headerFontSize,
+                              context: context,
+                            );
+                          },
+                        ) ,
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child:
+                    Container(
+                      // height: screenWidth * 0.35,
+                      height: screenWidth * 0.2,
+                      width: screenWidth * 0.15,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/logoimage.png'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ),
+
+                  // Изображение
+                  // Expanded(
+                  //   flex: 2,
+                  //   child: Container(
+                  //     height: screenHeight * 0.3,
+                  //     decoration: const BoxDecoration(
+                  //       image: DecorationImage(
+                  //         image: AssetImage('assets/logoimage.jpg'),
+                  //         fit: BoxFit.contain,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            )
+            ,
+
+            _buildSection(key: _section2Key,
+                child:  Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: screenHeight * 0.05),
+
+                        SizedBox(height: screenHeight * 0.05),
+                        Text(
+                          'ПОЧЕМУ ВЫБИРАЮТ ANI+?',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: titleFontSize,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: screenWidth*0.04,),
-                        Text("Наш сервис автоматически\nподключает вас к семейному доступу\nподписки, поэтому цена одной\nподписки распределяется между\nнесколькими пользователями",
-                          textAlign: TextAlign.start,
+                        Text(
+                          'наши преимущества',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: subtitleFontSize,
-                            // fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Manjari',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
+                    // Секция "Наши преимущества"
 
-                    Expanded(
-                      flex: 1,
-                      child:
-                      Container(
-                        height: screenWidth * 0.25,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/people_group.png'),
-                            fit: BoxFit.contain,
-                          ),
+
+                    SizedBox(height: screenWidth * 0.03),
+
+                    // Карточки преимуществ
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        // Адаптивная компоновка карточек в зависимости от ширины экрана
+                        return screenWidth > 900
+                            ? _buildAdvantagesRow(
+                          constraints.maxWidth,
+                          screenWidth,
+                          screenHeight,
+                          titleFontSize,
+                          bodyFontSize,
+                        )
+                            : _buildAdvantagesColumn(
+                          // : _buildAdvantagesColumn(
+                          constraints.maxWidth,
+                          screenWidth,
+                          screenHeight,
+                          titleFontSize,
+                          bodyFontSize,
+                        );
+                      },
+                    ),
+                  ],
+                ),)
+           ,
+
+
+
+
+            // Секция "Выберете свою подписку"
+            _buildSection(key: _section1Key,
+                child:  Column(
+                  children: [
+                    SizedBox(height: screenWidth * 0.09),
+                    Center(
+                      child: Text(
+                        'Выберете свою подписку',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: titleFontSize,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          
-          SizedBox(height: screenHeight * 0.05),
+                    ),
 
-          // Футер
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.symmetric(
-              vertical: verticalPadding * 1.5,
-              horizontal: horizontalPadding,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    SizedBox(height: screenWidth * 0.06),
+
+                    // Карточки подписок
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        // Адаптивная компоновка карточек подписок в зависимости от ширины экрана
+                        return screenWidth > 650
+                            ? _buildSubscriptionRow(
+                          // constraints.maxWidth,
+                          screenWidth,
+                          screenHeight,
+                          titleFontSize,
+                          subtitleFontSize,
+                          context,
+                        )
+                            : _buildSubscriptionColumn(
+                          constraints.maxWidth,
+                          screenHeight,
+                          screenWidth,
+                          titleFontSize,
+                          subtitleFontSize,
+                          context,
+                        );
+                      },
+
+                    ),
+                    SizedBox(height: screenWidth*0.1,),
+                  ],
+                )),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Логотип в футере
-                Container(
-                  width: screenWidth * 0.2,
-                  height: screenHeight * 0.15,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/ml.jpg'),
-                      fit: BoxFit.contain,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Почему так выгодно?",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: titleFontSize*1.2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: screenWidth*0.04,),
+                    Text("Наш сервис автоматически\nподключает вас к семейному доступу\nподписки, поэтому цена одной\nподписки распределяется между\nнесколькими пользователями",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: subtitleFontSize,
+                        // fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+
+                Expanded(
+                  flex: 1,
+                  child:
+                  Container(
+                    height: screenWidth * 0.25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/people_group.png'),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
-                ),
-                
-                // Навигация в футере
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildNavItem('Подписки', bodyFontSize * 1.2, context),
-                      SizedBox(width: screenWidth * 0.03),
-                      _buildNavItem('Преимущества', bodyFontSize * 1.2, context),
-                      SizedBox(width: screenWidth * 0.03),
-                      _buildNavItem('Поддержка', bodyFontSize * 1.2, context),
-                    ],
-                  ),
-                ),
+                )
               ],
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
+
+      SizedBox(height: screenHeight * 0.05),
+
+      // Футер
+      Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(
+          vertical: verticalPadding * 1.5,
+          horizontal: horizontalPadding,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Логотип в футере
+            Container(
+              width: screenWidth * 0.2,
+              height: screenHeight * 0.15,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/ml.jpg'),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+
+            // Навигация в футере
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _navLink('Подписки', headerFontSize * 0.4, _section1Key),
+                  SizedBox(width: screenWidth * 0.03),
+                  _navLink('Преимущества', headerFontSize * 0.4, _section2Key),
+                  SizedBox(width: screenWidth * 0.03),
+                  _buildNavItem('Поддержка', bodyFontSize * 1.2, context),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+)
+      ,
     );
   }
-  
+   Widget _navLink(String text,double fontSize, GlobalKey key) {
+     return GestureDetector(
+       child: Text(
+         text,
+         style: TextStyle(
+           color: Colors.black,
+           fontSize: fontSize,
+           fontFamily: 'Montserrat',
+           fontWeight: FontWeight.w400,
+         ),
+       ),
+       onTap: () => _scrollTo(key),
+     );
+   }
   // Вспомогательный метод для создания элемента навигации
   Widget _buildNavItem(String text, double fontSize, BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: fontSize,
-        fontFamily: 'Montserrat',
-        fontWeight: FontWeight.w400,
-      ),
+    return
+    GestureDetector(
+      onTap: _openTelegram,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: fontSize,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w400,
+        ),
+      ) ,
     );
   }
   
@@ -644,79 +703,87 @@ class AdaptiveLanding extends StatelessWidget {
           ],
         ),
         child:
-            // Row(
-            //   children: [
-            //     Column(
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: [
-            //         Text(
-            //           title,
-            //           textAlign: TextAlign.center,
-            //           style: TextStyle(
-            //             color: Colors.black,
-            //             fontSize: titleFontSize,
-            //             fontFamily: 'Manjari',
-            //             fontWeight: FontWeight.w400,
-            //             height: 1.32,
-            //           ),
-            //         ),
-            //         Text(
-            //           description,
-            //           textAlign: TextAlign.center,
-            //           style: TextStyle(
-            //             color: Colors.black,
-            //             fontSize: descriptionFontSize,
-            //             fontFamily: 'Manjari',
-            //             fontWeight: FontWeight.w400,
-            //             height: 1.32,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     Container(
-            //       height: width*0.25,
-            //       child: Image.asset(asset),
-            //     ),
-            //   ],
-            // )
-        Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            Container(
-              height: width*0.5,
-              child: Image.asset(asset),
-            ),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Row(
               children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: titleFontSize*0.8,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    height: 1.32,
-                  ),
-                ),
-                SizedBox(height: height * 0.02),
-                Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: descriptionFontSize,
-                    fontFamily: 'Manjari',
-                    fontWeight: FontWeight.w400,
-                    height: 1.32,
-                  ),
-                ),
+                Expanded(
+                  flex: 2,
+                    child:
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: titleFontSize,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                        height: 1.32,
+                      ),
+                    ),
+                   SizedBox(height: height*0.07,),
+                    Text(
+                      description,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: descriptionFontSize,
+                        fontFamily: 'Manjari',
+                        fontWeight: FontWeight.w400,
+                        height: 1.32,
+                      ),
+                    ),
+                  ],
+                )
+                )
+                ,
+                Expanded(child:
+                Container(
+                  height: width*0.25,
+                  child: Image.asset(asset),
+                ),)
+
               ],
             )
-          ],
-        ),
+        // Stack(
+        //   alignment: AlignmentDirectional.center,
+        //   children: [
+        //     Container(
+        //       height: width*0.5,
+        //       child: Image.asset(asset),
+        //     ),
+        //
+        //     Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           title,
+        //           textAlign: TextAlign.center,
+        //           style: TextStyle(
+        //             color: Colors.black,
+        //             fontSize: titleFontSize*0.8,
+        //             fontFamily: 'Montserrat',
+        //             fontWeight: FontWeight.w400,
+        //             height: 1.32,
+        //           ),
+        //         ),
+        //         SizedBox(height: height * 0.02),
+        //         Text(
+        //           description,
+        //           textAlign: TextAlign.center,
+        //           style: TextStyle(
+        //             color: Colors.black,
+        //             fontSize: descriptionFontSize,
+        //             fontFamily: 'Manjari',
+        //             fontWeight: FontWeight.w400,
+        //             height: 1.32,
+        //           ),
+        //         ),
+        //       ],
+        //     )
+        //   ],
+        // ),
 
       ),
 
@@ -724,28 +791,29 @@ class AdaptiveLanding extends StatelessWidget {
       
       ;
   }
-  
-  // Вспомогательный метод для создания строки преимуществ (для больших экранов)
-  Widget _buildAdvantagesRow(
-    double maxWidth,
-    double screenHeight,
-    double titleFontSize,
-    double bodyFontSize,
-  ) {
-    final cardWidth = (maxWidth - 120) / 3; // 3 карточки в ряд с отступами
-    final cardHeight = screenHeight * 0.25;
-    
-    return
-      IntrinsicHeight(
-        child:
 
-      Row(
+   Widget _buildAdvantagesRow(
+       double maxWidth,
+       double screenWidth,
+       double screenHeight,
+       double titleFontSize,
+       double bodyFontSize,
+       ) {
+     final cardWidth = (maxWidth - 120) / 2; // 3 карточки в ряд с отступами
+     final cardHeight = screenHeight * 0.25;
+
+     return
+       IntrinsicHeight(
+         child:
+Column(
+  children: [
+    Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _buildAdvantageCard(
-          'assets/li.jpg',
+          'assets/speed.jpg',
           'Скорость',
-          'После оплаты вам моментально прийдут данные дла подключения подписки',
+          'После оплаты вам моментально прийдут данные для подключения',
           cardWidth,
           cardHeight,
           titleFontSize * 0.9,
@@ -760,23 +828,90 @@ class AdaptiveLanding extends StatelessWidget {
           titleFontSize * 0.9,
           bodyFontSize,
         ),
+      ],
+    ),
+    SizedBox(height: screenWidth*0.015,),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
         _buildAdvantageCard(
-          'assets/pe.jpg',
+          'assets/people.jpg',
           'Техподдержка',
           'При любых вопросах вы можете связатья с администратором',
           cardWidth,
           cardHeight,
-          titleFontSize * 0.9,
+          titleFontSize * 0.7,
+          bodyFontSize,
+        ),
+        _buildAdvantageCard(
+          'assets/lock.jpg',
+          'Надежность',
+          'При блокировки аккаунта выдадим вам доступ к новому!',
+          cardWidth,
+          cardHeight,
+          titleFontSize * 0.85,
           bodyFontSize,
         ),
       ],
-    ),
-    );
-  }
+    )
+  ],
+)
+        ,
+       );
+   }
+  // Вспомогательный метод для создания строки преимуществ (для больших экранов)
+  // Widget _buildAdvantagesRow(
+  //   double maxWidth,
+  //   double screenHeight,
+  //   double titleFontSize,
+  //   double bodyFontSize,
+  // ) {
+  //   final cardWidth = (maxWidth - 120) / 3; // 3 карточки в ряд с отступами
+  //   final cardHeight = screenHeight * 0.25;
+  //
+  //   return
+  //     IntrinsicHeight(
+  //       child:
+  //
+  //     Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //     children: [
+  //       _buildAdvantageCard(
+  //         'assets/li.jpg',
+  //         'Скорость',
+  //         'После оплаты вам моментально прийдут данные дла подключения подписки',
+  //         cardWidth,
+  //         cardHeight,
+  //         titleFontSize * 0.9,
+  //         bodyFontSize,
+  //       ),
+  //       _buildAdvantageCard(
+  //         'assets/vigoda.png',
+  //         'Выгода',
+  //         'Наш сервис предлагает самые низкие цены на онлайн подписки',
+  //         cardWidth,
+  //         cardHeight,
+  //         titleFontSize * 0.9,
+  //         bodyFontSize,
+  //       ),
+  //       _buildAdvantageCard(
+  //         'assets/pe.jpg',
+  //         'Техподдержка',
+  //         'При любых вопросах вы можете связатья с администратором',
+  //         cardWidth,
+  //         cardHeight,
+  //         titleFontSize * 0.9,
+  //         bodyFontSize,
+  //       ),
+  //     ],
+  //   ),
+  //   );
+  // }
   
   // Вспомогательный метод для создания колонки преимуществ (для маленьких экранов)
   Widget _buildAdvantagesColumn(
     double maxWidth,
+    double screenWidth,
     double screenHeight,
     double titleFontSize,
     double bodyFontSize,
@@ -817,44 +952,64 @@ class AdaptiveLanding extends StatelessWidget {
     //     ),
     //   ],
     // );
-    final cardWidth = (maxWidth - 60) / 3; // 3 карточки в ряд с отступами
+    final cardWidth = (maxWidth - 60) / 2; // 3 карточки в ряд с отступами
     final cardHeight = screenHeight * 0.25;
 
     return
       IntrinsicHeight(
         child:
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        Column(
           children: [
-            _buildAdvantageCard(
-              'assets/li.jpg',
-              'Скорость',
-              'После оплаты вам моментально прийдут данные дла подключения подписки',
-              cardWidth,
-              cardHeight,
-              titleFontSize * 0.9,
-              bodyFontSize,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildAdvantageCard(
+                  'assets/speed.jpg',
+                  'Скорость',
+                  'После оплаты вам моментально прийдут данные для подключения',
+                  cardWidth,
+                  cardHeight,
+                  titleFontSize * 0.9,
+                  bodyFontSize,
+                ),
+                _buildAdvantageCard(
+                  'assets/vigoda.png',
+                  'Выгода',
+                  'Наш сервис предлагает самые низкие цены на онлайн подписки',
+                  cardWidth,
+                  cardHeight,
+                  titleFontSize * 0.9,
+                  bodyFontSize,
+                ),
+              ],
             ),
-            _buildAdvantageCard(
-              'assets/vigoda.png',
-              'Выгода',
-              'Наш сервис предлагает самые низкие цены на онлайн подписки',
-              cardWidth,
-              cardHeight,
-              titleFontSize * 0.9,
-              bodyFontSize,
-            ),
-            _buildAdvantageCard(
-              'assets/pe.jpg',
-              'Техподдержка',
-              'При любых вопросах вы можете связатья с администратором',
-              cardWidth,
-              cardHeight,
-              titleFontSize * 0.9,
-              bodyFontSize,
-            ),
+            SizedBox(height: screenWidth*0.0265,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildAdvantageCard(
+                  'assets/people.jpg',
+                  'Техподдержка',
+                  'При любых вопросах вы можете связатья с администратором',
+                  cardWidth,
+                  cardHeight,
+                  titleFontSize * 0.7,
+                  bodyFontSize,
+                ),
+                _buildAdvantageCard(
+                  'assets/lock.jpg',
+                  'Надежность',
+                  'При блокировки аккаунта выдадим вам доступ к новому!',
+                  cardWidth,
+                  cardHeight,
+                  titleFontSize * 0.85,
+                  bodyFontSize,
+                ),
+              ],
+            )
           ],
-        ),
+        )
+        ,
       );
   }
 
