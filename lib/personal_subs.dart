@@ -103,22 +103,26 @@ class DesktopView extends StatelessWidget {
                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SubscriptionCardDesktop(
-                      ownersub: ownerSubs[0],
-                      width: cardWidth,
-                    ),
-                    const SizedBox(width: 20),
-                    SubscriptionCardDesktop(
-                      ownersub: ownerSubs[1],
-                      width: cardWidth,
-                    ),
-                    const SizedBox(width: 20),
-                    const AddSubscriptionCard(),
-                  ],
-                ),
+                IntrinsicHeight(
+                  child:
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SubscriptionCardDesktop(
+                        ownersub: ownerSubs[0],
+                        width: cardWidth,
+                      ),
+                      const SizedBox(width: 20),
+                      SubscriptionCardDesktop(
+                        ownersub: ownerSubs[1],
+                        width: cardWidth,
+                      ),
+                      const SizedBox(width: 20),
+                      const AddSubscriptionCard(),
+                    ],
+                  ),
+                )
+                ,
               ],
             ),
           ),
@@ -131,8 +135,8 @@ class DesktopView extends StatelessWidget {
 class MobileView extends StatelessWidget {
    MobileView({super.key});
    final List<ownerSubscriptions> ownerSubs = [
-     ownerSubscriptions(title: 'ChatGPT', date: '20.08.2008', imagePath: 'assets/gpt.png'),
-     ownerSubscriptions(title: 'Apple One', date: '20.08.2008', imagePath: 'assets/apple.png')
+     ownerSubscriptions(title: 'ChatGPT', date: '20.08.2008', imagePath: 'assets/gpt.jpg'),
+     ownerSubscriptions(title: 'Apple One', date: '20.08.2008', imagePath: 'assets/apple.jpg')
    ];
 
   @override
@@ -232,7 +236,6 @@ class SubscriptionCardMobile extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     const SizedBox(height: 10),
                     Text(
                       ownersub.title,
@@ -353,7 +356,7 @@ class SubscriptionCardDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     return
     Container(
-      width: width,
+      width: 240,
       child:
       Card(
         elevation: 4,
@@ -361,11 +364,11 @@ class SubscriptionCardDesktop extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(right: 20, left: 20, top:30, bottom: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(ownersub.imagePath, width: width*0.3,height: width*0.3,),
+              Image.asset(ownersub.imagePath, width: 140,height: 140,),
               const SizedBox(height: 10),
               Text(
                 ownersub.title,
@@ -407,8 +410,8 @@ class AddSubscriptionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
-        width: 200, // Adjust width as needed
-        height: 200, // Adjust height as needed
+        width: 240, // Adjust width as needed
+        height: 310, // Adjust height as needed
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -418,7 +421,7 @@ class AddSubscriptionCard extends StatelessWidget {
               size: 60,
               color: const Color(0xFF4285F4),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 70),
             const Text(
               'Перейти к другим\nподпискам',
               textAlign: TextAlign.center,

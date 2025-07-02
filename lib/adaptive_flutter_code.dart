@@ -846,7 +846,7 @@ Column(
         _buildAdvantageCard(
           'assets/lock.jpg',
           'Надежность',
-          'При блокировки аккаунта выдадим вам доступ к новому!',
+            'Уже более 10 000 пользователей \nвыбрало нас!',
           cardWidth,
           cardHeight,
           titleFontSize * 0.85,
@@ -999,7 +999,7 @@ Column(
                 _buildAdvantageCard(
                   'assets/lock.jpg',
                   'Надежность',
-                  'При блокировки аккаунта выдадим вам доступ к новому!',
+                  'Уже более 10 000 пользователей \nвыбрало нас!',
                   cardWidth,
                   cardHeight,
                   titleFontSize * 0.85,
